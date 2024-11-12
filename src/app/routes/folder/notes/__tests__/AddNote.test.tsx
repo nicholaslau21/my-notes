@@ -2,12 +2,13 @@ import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "../../../../../testing/test-utils";
 import NotesPage from "../Notes";
+import {
+    createFolders,
+    createNotes,
+} from "../../../../../testing/data-generators";
 
 it("should show the new note title", () => {
-    const initialFolders = [
-        { folderId: "f1", name: "Movies" },
-        { folderId: "f2", name: "TV Shows" },
-    ];
+    const initialFolders = createFolders();
 
     renderWithProviders(<NotesPage />, ["/", "/notes/add"], 1, {
         preloadedState: {
@@ -33,10 +34,7 @@ it("should show the form fields", () => {
 });
 
 it("should show the folder dropdown with the saved folders options", () => {
-    const initialFolders = [
-        { folderId: "f1", name: "Movies" },
-        { folderId: "f2", name: "TV Shows" },
-    ];
+    const initialFolders = createFolders();
     renderWithProviders(<NotesPage />, ["/", "/notes/add"], 1, {
         preloadedState: {
             folders: { folders: initialFolders },
@@ -48,10 +46,7 @@ it("should show the folder dropdown with the saved folders options", () => {
 it("should go back to the notes list, when the cancel button is clicked", async () => {
     const user = userEvent.setup();
 
-    const initialFolders = [
-        { folderId: "f1", name: "Movies" },
-        { folderId: "f2", name: "TV Shows" },
-    ];
+    const initialFolders = createFolders();
     renderWithProviders(<NotesPage />, ["/", "/notes/add"], 1, {
         preloadedState: {
             folders: { folders: initialFolders },
@@ -67,25 +62,9 @@ it("should go back to the notes list, when the cancel button is clicked", async 
 it("should save the new note, when save button is clicked", async () => {
     const user = userEvent.setup();
 
-    const initialFolders = [
-        { folderId: "f1", name: "Movies" },
-        { folderId: "f2", name: "TV Shows" },
-    ];
+    const initialFolders = createFolders();
 
-    const notes = [
-        {
-            id: "n1",
-            title: "Joker",
-            description: "We need to watch this soon!",
-            folderId: "f1",
-        },
-        {
-            id: "n2",
-            title: "Dexter",
-            description: "Maybe we need to watch this soon",
-            folderId: "f2",
-        },
-    ];
+    const notes = createNotes();
 
     renderWithProviders(<NotesPage />, ["/", "/f1/add"], 1, {
         preloadedState: {

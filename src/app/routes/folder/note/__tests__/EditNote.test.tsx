@@ -2,27 +2,14 @@ import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "../../../../../testing/test-utils";
 import EditNotePage from "../EditNote";
 import { screen } from "@testing-library/react";
+import {
+    createFolders,
+    createNotes,
+} from "../../../../../testing/data-generators";
 
-it("should populate the note details", async () => {
-    const initialFolders = [
-        { folderId: "f1", name: "Movies" },
-        { folderId: "f2", name: "TV Shows" },
-    ];
-
-    const notes = [
-        {
-            id: "n1",
-            title: "Joker",
-            description: "We need to watch this soon!",
-            folderId: "f1",
-        },
-        {
-            id: "n2",
-            title: "Dexter",
-            description: "Maybe we need to watch this soon",
-            folderId: "f2",
-        },
-    ];
+it("should populate the note details", () => {
+    const initialFolders = createFolders();
+    const notes = createNotes();
 
     renderWithProviders(<EditNotePage />, ["/f1", "/f1/n1/edit"], 1, {
         preloadedState: {
@@ -48,25 +35,8 @@ it("should populate the note details", async () => {
 it("should go back to note page, when the cancel button is clicked", async () => {
     const user = userEvent.setup();
 
-    const initialFolders = [
-        { folderId: "f1", name: "Movies" },
-        { folderId: "f2", name: "TV Shows" },
-    ];
-
-    const notes = [
-        {
-            id: "n1",
-            title: "Joker",
-            description: "We need to watch this soon!",
-            folderId: "f1",
-        },
-        {
-            id: "n2",
-            title: "Dexter",
-            description: "Maybe we need to watch this soon",
-            folderId: "f2",
-        },
-    ];
+    const initialFolders = createFolders();
+    const notes = createNotes();
 
     renderWithProviders(<EditNotePage />, ["/f1", "/f1/n1/edit"], 1, {
         preloadedState: {
@@ -84,25 +54,8 @@ it("should go back to note page, when the cancel button is clicked", async () =>
 it("should save the updated note, when the save button is clicked", async () => {
     const user = userEvent.setup();
 
-    const initialFolders = [
-        { folderId: "f1", name: "Movies" },
-        { folderId: "f2", name: "TV Shows" },
-    ];
-
-    const notes = [
-        {
-            id: "n1",
-            title: "Joker",
-            description: "We need to watch this soon!",
-            folderId: "f1",
-        },
-        {
-            id: "n2",
-            title: "Dexter",
-            description: "Maybe we need to watch this soon",
-            folderId: "f2",
-        },
-    ];
+    const initialFolders = createFolders();
+    const notes = createNotes();
 
     renderWithProviders(<EditNotePage />, ["/f1/n1", "/f1/n1/edit"], 1, {
         preloadedState: {
@@ -132,25 +85,8 @@ it("should save the updated note, when the save button is clicked", async () => 
 it("should navigate back to the note page, when the the note is updated and folder is unchanged", async () => {
     const user = userEvent.setup();
 
-    const initialFolders = [
-        { folderId: "f1", name: "Movies" },
-        { folderId: "f2", name: "TV Shows" },
-    ];
-
-    const notes = [
-        {
-            id: "n1",
-            title: "Joker",
-            description: "We need to watch this soon!",
-            folderId: "f1",
-        },
-        {
-            id: "n2",
-            title: "Dexter",
-            description: "Maybe we need to watch this soon",
-            folderId: "f2",
-        },
-    ];
+    const initialFolders = createFolders();
+    const notes = createNotes();
 
     renderWithProviders(<EditNotePage />, ["/f1", "/f1/n1", "/f1/n1/edit"], 2, {
         preloadedState: {
@@ -173,37 +109,15 @@ it("should navigate back to the note page, when the the note is updated and fold
 it("should navigate back to the notes list page, when the note is updated and folder is changed", async () => {
     const user = userEvent.setup();
 
-    const initialFolders = [
-        { folderId: "f1", name: "Movies" },
-        { folderId: "f2", name: "TV Shows" },
-    ];
+    const initialFolders = createFolders();
+    const notes = createNotes();
 
-    const notes = [
-        {
-            id: "n1",
-            title: "Joker",
-            description: "We need to watch this soon!",
-            folderId: "notes",
+    renderWithProviders(<EditNotePage />, ["/f1", "/f1/n1", "/f1/n1/edit"], 2, {
+        preloadedState: {
+            folders: { folders: initialFolders },
+            notes: { notes: notes },
         },
-        {
-            id: "n2",
-            title: "Dexter",
-            description: "Maybe we need to watch this soon",
-            folderId: "f2",
-        },
-    ];
-
-    renderWithProviders(
-        <EditNotePage />,
-        ["/notes", "/notes/n1", "/notes/n1/edit"],
-        2,
-        {
-            preloadedState: {
-                folders: { folders: initialFolders },
-                notes: { notes: notes },
-            },
-        }
-    );
+    });
 
     const folderSelect = screen.getByRole("combobox", { name: "Folder" });
     await user.selectOptions(folderSelect, ["TV Shows"]);

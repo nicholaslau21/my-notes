@@ -2,24 +2,20 @@ import { screen } from "@testing-library/react";
 import { renderWithProviders } from "../../../../testing/test-utils";
 import NotesList from "../NotesList";
 import userEvent from "@testing-library/user-event";
+import {
+    createFolders,
+    createNotes,
+} from "../../../../testing/data-generators";
 
 it("should render the list of saved notes", () => {
-    const initialFolders = [
-        { folderId: "f1", name: "Movies" },
-        { folderId: "f2", name: "TV Shows" },
-    ];
+    const initialFolders = createFolders();
 
     const notes = [
+        ...createNotes(),
         {
-            id: "n1",
-            title: "Joker",
-            description: "We need to watch this soon!",
-            folderId: "f1",
-        },
-        {
-            id: "n2",
+            id: "n3",
             title: "Spiderman",
-            description: "Maybe we need to watch this soon",
+            description: "Watch this!",
             folderId: "f1",
         },
     ];
@@ -43,25 +39,8 @@ it("should render no notes found, when there are no notes", () => {
 it("should show the note details, when it is clicked", async () => {
     const user = userEvent.setup();
 
-    const initialFolders = [
-        { folderId: "f1", name: "Movies" },
-        { folderId: "f2", name: "TV Shows" },
-    ];
-
-    const notes = [
-        {
-            id: "n1",
-            title: "Joker",
-            description: "We need to watch this soon!",
-            folderId: "f1",
-        },
-        {
-            id: "n2",
-            title: "Dexter",
-            description: "Maybe we need to watch this soon",
-            folderId: "f2",
-        },
-    ];
+    const initialFolders = createFolders();
+    const notes = createNotes();
 
     renderWithProviders(<NotesList notes={notes} />, ["/f1"], 0, {
         preloadedState: {

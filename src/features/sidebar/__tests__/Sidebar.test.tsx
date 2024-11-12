@@ -2,6 +2,7 @@ import { screen } from "@testing-library/react";
 import Sidebar from "../components/Sidebar";
 import { renderWithProviders } from "../../../testing/test-utils";
 import userEvent from "@testing-library/user-event";
+import { createFolders, createNotes } from "../../../testing/data-generators";
 
 it("should display the sidebar header", () => {
     renderWithProviders(<Sidebar />);
@@ -41,25 +42,8 @@ it("should show the other saved folders", async () => {
 it("should show the notes by folder, when it is clicked", async () => {
     const user = userEvent.setup();
 
-    const initialFolders = [
-        { folderId: "f1", name: "Movies" },
-        { folderId: "f2", name: "TV Shows" },
-    ];
-
-    const notes = [
-        {
-            id: "n1",
-            title: "Joker",
-            description: "We need to watch this soon!",
-            folderId: "f1",
-        },
-        {
-            id: "n2",
-            title: "Dexter",
-            description: "Maybe we need to watch this soon",
-            folderId: "f2",
-        },
-    ];
+    const initialFolders = createFolders();
+    const notes = createNotes();
 
     renderWithProviders(<Sidebar />, ["/"], 0, {
         preloadedState: {
