@@ -1,19 +1,20 @@
 import ReactMarkdown from "react-markdown";
 import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
 import { noteActions } from "../../../../stores/note";
 import { useNote } from "./NoteLayout";
 
 export default function NotePage() {
+    const { folderId } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const note = useNote();
 
     function handleDeleteNote(id: string) {
         dispatch(noteActions.deleteNote(id));
-        navigate(-1);
+        navigate(`/${folderId}`);
     }
 
     return (
